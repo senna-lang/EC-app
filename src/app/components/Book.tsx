@@ -15,9 +15,33 @@ type BookProps = {
 
 const Book = ({ book }: BookProps) => {
   const [openModal, setOpenModal] = useState(false);
-  const {data : session} = useSession();
-  const user = session?.user;
+  const { data: session } = useSession();
+  const user: any = session?.user;
   const router = useRouter();
+
+  const startCheckout = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: book.title,
+          price: book.price,
+          userId: user?.id,
+          bookId: book.id,
+        }),
+      });
+      console.log(res);
+      const resData = await res.json();
+      if (resData) {
+        router.push(resData.checkout_url);
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
 
   const handleCancel = () => {
     setOpenModal(false);
@@ -26,13 +50,14 @@ const Book = ({ book }: BookProps) => {
     setOpenModal(true);
   };
   const handlePurchaseConfirm = () => {
-    if(!user) {
+    if (!user) {
       setOpenModal(false);
-      router.push('/api/auth/signin')
-    }else {
+      router.push('/api/auth/signin');
+    } else {
       //stripeで決済
+      startCheckout();
     }
-  }
+  };
 
   return (
     <>
