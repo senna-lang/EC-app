@@ -1,5 +1,5 @@
 import Book from './components/Book';
-import { getAllBooks } from './lib/next-auth/microcms/client';
+import { getAllBooks } from './lib/microcms/client';
 import { BookType } from './types/types';
 
 // eslint-disable-next-line @next/next/no-async-client-component
