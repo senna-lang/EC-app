@@ -16,7 +16,7 @@ export const getAllBooks = async () => {
 export const getDetailBook = async (contentId: string) => {
   const detailBook = await client.getListDetail<BookType>({
     endpoint: 'myecsite',
-    contentId,
+    contentId : contentId,
   });
   return detailBook;
 };
