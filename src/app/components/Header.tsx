@@ -1,12 +1,13 @@
-'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { nextAuthOptions } from '../lib/next-auth/options';
+import { User } from '../types/types';
 
-const Header = () => {
-  const { data: session } = useSession();
-  const user = session?.user;
+const Header = async () => {
+  const session = await getServerSession(nextAuthOptions);
+  const user = session?.user as User;
   return (
     <header className="bg-slate-600 text-gray-100 shadow-lg">
       <nav className="flex items-center justify-between p-4">
