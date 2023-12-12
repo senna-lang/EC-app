@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { BookType } from '../types/types';
+import { BookType, User } from '../types/types';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -11,12 +11,13 @@ import { useRouter } from 'next/navigation';
 
 type BookProps = {
   book: BookType;
+  isPurchased: boolean;
 };
 
-const Book = ({ book }: BookProps) => {
+const Book = ({ book, isPurchased }: BookProps) => {
   const [openModal, setOpenModal] = useState(false);
   const { data: session } = useSession();
-  const user: any = session?.user;
+  const user = session?.user as User;
   const router = useRouter();
 
   const startCheckout = async () => {
@@ -33,7 +34,6 @@ const Book = ({ book }: BookProps) => {
           bookId: book.id,
         }),
       });
-      console.log(res);
       const resData = await res.json();
       if (resData) {
         router.push(resData.checkout_url);
@@ -53,6 +53,9 @@ const Book = ({ book }: BookProps) => {
     if (!user) {
       setOpenModal(false);
       router.push('/api/auth/signin');
+    }
+    if (isPurchased) {
+      alert('その商品は購入済みです');
     } else {
       //stripeで決済
       startCheckout();
