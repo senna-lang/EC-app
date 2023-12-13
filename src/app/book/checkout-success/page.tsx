@@ -9,7 +9,7 @@ const PurchaseSuccess = () => {
   const [bookUrl, setBookUrl] = useState(null);
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
-
+  
   useEffect(() => {
     const fetchData = async () => {
       if (sessionId) {
@@ -21,8 +21,8 @@ const PurchaseSuccess = () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ sessionId }),
             }
-          );
-          const data = await res.json();
+            );
+            const data = await res.json();
           setBookUrl(data.purchase.bookId);
         } catch (err) {
           console.log(err);
