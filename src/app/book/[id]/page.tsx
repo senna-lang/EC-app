@@ -1,13 +1,5 @@
 import { getAllBooks, getDetailBook } from '@/app/lib/microcms/client';
-import { BookType } from '@/app/types/types';
 import Image from 'next/image';
-
-export async function generateStaticParams() {
-  const { contents } = await getAllBooks();
-  return contents.map((book: BookType) => {
-    id: book.id;
-  });
-}
 
 const DetailBook = async ({ params }: { params: { id: string } }) => {
   const book = await getDetailBook(params.id);
